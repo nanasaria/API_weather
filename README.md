@@ -12,7 +12,7 @@
 
 Content-type: x-www-form-urlencoded
 
-Parameters on body:
+Parameters required on body:
 | Key         | value |
 |-------------|-------|
 | humidity    |  int  |
