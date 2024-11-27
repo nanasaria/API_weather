@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { addCurrentWeather, listWeather} from './firebase/index.js'
+import { addCurrentWeather, listWeather, searchFilter} from './firebase/index.js'
 import setupWebSocketServer from './app-ws.js';
 import 'dotenv/config'
 
@@ -22,6 +22,17 @@ app.get('/listWeather', async (req, res) => {
     res.status(404).send('Não é possível listar as temperaturas');
   }
 });
+
+app.get('/buscar', async(req, res) => {
+  try{
+    const {date, hour} = req.query;
+    const search = await searchFilter(date, hour);
+    res.status(200).json(search)
+  }catch(error){
+    console.error(error)
+    res.status(500).send('Erro ao buscar dados')
+  }
+})
 
 app.post('/addWeather', async (req, res) => {
   try {

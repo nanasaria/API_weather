@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import moment from 'moment'
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue, push } from "firebase/database";
+import { getDatabase, ref, set, onValue, push, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -45,5 +45,17 @@ export async function listWeather(){
             reject(error)
         })
     })
-  
+}
+
+export async function searchFilter(date, hour){
+    const snapshot = await get(refDb);
+    const allData = snapshot.val()
+
+    const result = Object.values(allData).filter((item) => {
+      const matchDate = date ? item.date === date : true;
+      const matchHour = hour ? item.hour === hour : true;
+      return matchDate && matchHour;
+    });
+
+    return result;
 }
